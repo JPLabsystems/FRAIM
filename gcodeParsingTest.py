@@ -6,6 +6,9 @@ file.close()
 
 pointCloud = open("/home/justinas/FRAIM/pointcloud.txt", "w")
 
+xarray = []
+yarray = []
+
 def addLine(subString):
     #x
     x = 0
@@ -16,9 +19,9 @@ def addLine(subString):
             while gcode[innerLoopIndex] != " ":
                 innerLoopIndex = innerLoopIndex + 1
             x = subString[xI + 1 :innerLoopIndex]
-            #print(x)
         xI = xI + 1
 
+    #y
     y = 0
     yI = 0
     for char in subString:
@@ -36,6 +39,8 @@ def addLine(subString):
 count = 0
 zcount = 1
 for char in gcode:
+    if count > 2000:
+        break
     if gcode[count] == "G" and gcode[count+1] == "1" and gcode[count + 3] == "X":
 
         innerLoopIndex = count
@@ -50,8 +55,13 @@ for char in gcode:
 
     count = count + 1
 
-plt.plot(0, 0)
-plt.plot(1, 0)
-plt.plot(-2, 5)
 
-plt.show
+#plt.plot([2,5.4,3,2],[1,3,7,6],'o')
+
+plt.xlabel("X-axis")
+plt.ylabel("Y-axis")
+plt.grid(True) # Add a grid for easier viewing
+plt.xlim([-10,10])
+plt.ylim([-10,10])
+
+plt.show()
