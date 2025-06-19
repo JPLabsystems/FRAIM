@@ -10,27 +10,39 @@ public class main {
         try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(pointCloud))) {
-                
+
+                String z = "";
+                String x = "";
+                String y = "";
+                String toWrite = "";
+
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    
+
                     // writer.write(line + "\n");
                     // System.out.println(line);
 
                     /*
                      * 
-                     */ 
-
-                    for(int i = 0; i < line.length() - 4; i++)
-                    {
-                        if(line.substring(i, i+4).equals("G1 X")){
-                            writer.write(line + "\n");
-                        }
-                    }
-
-                     /* 
-                     * 
                      */
+
+                    for (int i = 0; i < line.length() - 11; i++) {
+                        if (line.substring(i, i + 4).equals("G1 X")) {
+
+                            x = line.substring(i + 4, i + 10);
+                            System.out.println(x);
+                        }
+
+                        // if(line.substring(i, i+4).equals("G1 Z")){
+                        // writer.write(line + "\n");
+                        // }
+                    }
+                    toWrite = x;
+                    writer.write(toWrite + "\n");
+
+                    /* 
+                    * 
+                    */
 
                 }
             } catch (IOException e) {
