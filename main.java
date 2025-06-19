@@ -14,8 +14,8 @@ public class main {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     
-                    writer.write(line + "\n");
-                    System.out.println(line);
+                    // writer.write(line + "\n");
+                    // System.out.println(line);
 
                     /*
                      * 
@@ -23,7 +23,7 @@ public class main {
 
                     for(int i = 0; i < line.length() - 4; i++)
                     {
-                        if(line.substring(i, i+1) == "G1"){
+                        if(line.substring(i, i+4).equals("G1 X")){
                             writer.write(line + "\n");
                         }
                     }
