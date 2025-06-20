@@ -4,6 +4,20 @@ import java.io.*;
 public class main {
     public static void main(String[] args) {
 
+        Scanner in = new Scanner(System.in);
+
+        System.out.println("Enter path or leave empty for default (/home/justinas/FRAIM/modle.gcode)");
+        String path = in.nextLine();
+
+        in.close();
+
+        if(path.equals(""))
+        {
+            path = "/home/justinas/FRAIM/model.gcode";
+        }
+
+        System.out.println(path + "\n");
+
         File gcode = new File("/home/justinas/FRAIM/model.gcode");
         File pointCloud = new File("/home/justinas/FRAIM/pointcloudjava.txt");
 
@@ -29,8 +43,15 @@ public class main {
                     for (int i = 0; i < line.length() - 11; i++) {
                         if (line.substring(i, i + 4).equals("G1 X")) {
 
-                            x = line.substring(i + 4, i + 10);
-                            System.out.println(x);
+                            // int index = i;
+                            // while(line.substring(index, index + 1) != "Y" && index < line.length())
+                            // {
+                            //     index++;
+                            // }
+                            // System.out.println(line.substring(index - 2, index));
+
+                            // x = line.substring(i + 4, i + 10);
+                            // // System.out.println(x);
                         }
 
                         // if(line.substring(i, i+4).equals("G1 Z")){
