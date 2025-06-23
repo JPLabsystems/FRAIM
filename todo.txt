@@ -1,0 +1,4 @@
+visualization using matplotlib?
+decimation
+training/get tensorflow running
+parsing into ply/other standard formats
