@@ -25,4 +25,10 @@ public class Pointcloud {
             System.out.printf("point: %.3f, %.3f, %.3f%n", pointcloud.get(i)[0], pointcloud.get(i)[1], pointcloud.get(i)[2]);
         }
     }
+
+    public ArrayList<Double[]> getList()
+    {
+        return pointcloud;
+    }
+
 }

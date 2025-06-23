@@ -9,19 +9,28 @@ public class main {
         Scanner in = new Scanner(System.in);
 
         System.out.println(
-                "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/modle.gcode)\n************************");
+            "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/model.gcode)\n************************");
         String path = in.nextLine();
+
+        System.out.println(
+            "\n************************\nEnter path for output or leave empty for default (/home/justinas/FRAIM/pointcloudjava.txt)\n************************");
+        String out = in.nextLine();
 
         in.close();
 
         if (path.equals("")) {
             path = "/home/justinas/FRAIM/model.gcode";
         }
+        if (out.equals("")) {
+            out = "/home/justinas/FRAIM/pointcloudjava.txt";
+        }
 
-        System.out.println("gcode source path = " + path + "\n");
+        System.out.println("gcode source path = " + path);
+        System.out.println("output source path = " + out + "\n");
 
-        File gcode = new File("/home/justinas/FRAIM/model.gcode");
-        File pointCloud = new File("/home/justinas/FRAIM/pointcloudjava.txt");
+
+        File gcode = new File(path);
+        File pointCloud = new File(out);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
 
@@ -76,15 +85,14 @@ public class main {
                     }
                     if (moveFlag) {
                         CLOUD.append(point);
-                        System.out.printf("point: %.3f, %.3f, %.3f%n", point[0], point[1], point[2]);
-                        writer.write("" + point[0] + ", " + point[1] + ", " + point[2] + "\n");
+                        // System.out.printf("point: %.3f, %.3f, %.3f%n", point[0], point[1], point[2]);
+                        writer.write(String.format("%.3f, %.3f, %.3f%n", point[0], point[1], point[2]));
                         moveFlag = false;
                     }
 
                 }
 
                 // CLOUD.printCloud();
-
                 System.out.println("\nRead/Write parsing complete");
 
             } catch (IOException e) {
