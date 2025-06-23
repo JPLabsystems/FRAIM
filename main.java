@@ -8,13 +8,13 @@ public class main {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.println("\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/modle.gcode)\n************************");
+        System.out.println(
+                "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/modle.gcode)\n************************");
         String path = in.nextLine();
 
         in.close();
 
-        if(path.equals(""))
-        {
+        if (path.equals("")) {
             path = "/home/justinas/FRAIM/model.gcode";
         }
 
@@ -27,63 +27,71 @@ public class main {
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(pointCloud))) {
 
-                Double zCoord; 
+                boolean moveFlag = false;
+
+                Double zCoord;
                 Double xCoord;
                 Double yCoord;
-
-                String toWrite = "";
 
                 Double[] point = new Double[3];
 
                 /* EACH LINE REPRESENTS ONE POINT */
 
                 String line;
-                while ((line = reader.readLine()) != null) { 
+                while ((line = reader.readLine()) != null) {
 
                     for (int i = 0; i < line.length() - 11; i++) {
 
-                        if(line.substring(i, i + 4).equals("G1 Z") && i == 0)
-                        {
+                        if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
                             writer.write(line + "\n");
 
-
-                            /*
-                             * EXTRACT VALUE OF TYPE Double
-                             */
-
-                            int j = i+4;
-                            while(!line.substring(j, j+1).equals(" "))
-                            {
+                            int j = i + 4;
+                            while (!line.substring(j, j + 1).equals(" ")) {
                                 j++;
                             }
-                            zCoord = new Double(line.substring(i+4, j));
+                            zCoord = new Double(line.substring(i + 4, j));
                             // System.out.println(String.format("zCoord = %.3f", zCoord));
 
                             point[2] = zCoord;
                         }
 
-                        if (line.substring(i, i + 4).equals("G1 X") && i == 0) {
+                        if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1) {
+
+                            moveFlag = true;
 
                             writer.write(line + "\n");
-                            int j = i+4;
-                            while(!line.substring(j, j+1).equals(" "))
-                            {
+
+                            int j = i + 4;
+                            while (!line.substring(j, j + 1).equals(" ")) {
                                 j++;
                             }
-                            xCoord = new Double(line.substring(i+4, j));
-                            // System.out.println(String.format("xCoord = %.3f", xCoord));
+                            xCoord = new Double(line.substring(i + 4, j));
 
                             point[0] = xCoord;
 
+                            int k = j + 1;
+                            while (!line.substring(k, k + 1).equals(" ") && (k <= line.length() - 2)) {
+                                k++;
+                                // System.out.println("" + k + " " + line.substring(k, k + 1));
+                            }
+                            // System.out.println(line.substring(j + 2, k));
+
+                            yCoord = new Double(line.substring(j+2, k));
+
+                            point[1] = yCoord;
+
                         }
 
-
                     }
-                    
-                    CLOUD.append(point);
-                    System.out.println("point: " + point[0] + ", " + point[1] + ", " +  point[2]);
+                    if (moveFlag) {
+                        CLOUD.append(point);
+                        System.out.printf("point: %.3f, %.3f, %.3f%n", point[0], point[1], point[2]);
+                        moveFlag = false;
+                    }
 
                 }
+
+                // CLOUD.printCloud();
 
                 System.out.println("\nRead/Write parsing complete");
 
