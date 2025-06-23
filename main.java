@@ -4,7 +4,7 @@ import java.io.*;
 public class main {
     public static void main(String[] args) {
 
-        ArrayList<Double[]> pointcloud = new ArrayList<>();
+        Pointcloud CLOUD = new Pointcloud();
 
         Scanner in = new Scanner(System.in);
 
@@ -27,10 +27,10 @@ public class main {
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(pointCloud))) {
 
-                String z = "";
                 Double zCoord; 
-                String x = "";
-                String y = "";
+                Double xCoord;
+                Double yCoord;
+
                 String toWrite = "";
 
                 Double[] point = new Double[3];
@@ -44,6 +44,8 @@ public class main {
 
                         if(line.substring(i, i + 4).equals("G1 Z") && i == 0)
                         {
+                            writer.write(line + "\n");
+
 
                             /*
                              * EXTRACT VALUE OF TYPE Double
@@ -55,43 +57,35 @@ public class main {
                                 j++;
                             }
                             zCoord = new Double(line.substring(i+4, j));
-                            System.out.println(String.format("zCoord = %.3f", zCoord));
+                            // System.out.println(String.format("zCoord = %.3f", zCoord));
 
-
-                            writer.write(line + "\n");
-
-                            z = line.substring(i + 4, i+6);
-                            System.out.println(z);
-
-                            // Double Z = new Double(z);
-                            // System.out.println("Double value" + Z);
+                            point[2] = zCoord;
                         }
 
                         if (line.substring(i, i + 4).equals("G1 X") && i == 0) {
 
                             writer.write(line + "\n");
+                            int j = i+4;
+                            while(!line.substring(j, j+1).equals(" "))
+                            {
+                                j++;
+                            }
+                            xCoord = new Double(line.substring(i+4, j));
+                            // System.out.println(String.format("xCoord = %.3f", xCoord));
 
-                            // int index = i;
-                            // while(line.substring(index, index + 1) != "Y" && index < line.length())
-                            // {
-                            //     index++;
-                            // }
-                            // System.out.println(line.substring(index - 2, index));
+                            point[0] = xCoord;
 
-                            // x = line.substring(i + 4, i + 10);
-                            // // System.out.println(x);
                         }
 
-                        // if(line.substring(i, i+4).equals("G1 Z")){
-                        // writer.write(line + "\n");
-                        // }
+
                     }
-                    // toWrite = x;
-                    // writer.write(toWrite + "\n");
+                    
+                    CLOUD.append(point);
+                    System.out.println("point: " + point[0] + ", " + point[1] + ", " +  point[2]);
 
                 }
 
-                System.out.println("Read/Write parsing complete");
+                System.out.println("\nRead/Write parsing complete");
 
             } catch (IOException e) {
                 e.printStackTrace();
