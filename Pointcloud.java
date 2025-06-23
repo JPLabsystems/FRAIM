@@ -4,13 +4,33 @@ public class Pointcloud {
 
     private ArrayList<Double[]> pointcloud;
 
+    private ArrayList<Double> xArr;
+    private ArrayList<Double> yArr;
+    private ArrayList<Double> zArr;
+
+
     public Pointcloud() {
         pointcloud = new ArrayList<>();
+        xArr = new ArrayList<>();
+        yArr = new ArrayList<>();
+        zArr = new ArrayList<>();
     }
 
     public void append(Double[] point)
     {
         pointcloud.add(point);
+    }
+    public void appendX(Double d)
+    {
+        xArr.add(d);
+    }
+    public void appendY(Double d)
+    {
+        yArr.add(d);
+    }
+    public void appendZ(Double d)
+    {
+        zArr.add(d);
     }
 
     public void printCloud()
@@ -29,6 +49,19 @@ public class Pointcloud {
     public ArrayList<Double[]> getList()
     {
         return pointcloud;
+    }
+
+    public void decimate()
+    {
+        int length = pointcloud.size();
+
+        for(int i = 0; i <length; i ++)
+        {
+            if(i % 10 == 0)
+            {
+                pointcloud.remove(i);
+            }
+        }
     }
 
 }

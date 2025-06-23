@@ -1,32 +1,42 @@
+from mpl_toolkits.mplot3d import Axes3D
+
 import matplotlib.pyplot as plt
-import numpy as np
 
-# Fixing random state for reproducibility
-np.random.seed(19680801)
+file = open("/home/justinas/FRAIM/pointcloudjava.txt", "r")
+cloud = file.read()
+file.close()
 
+points = cloud.strip().split('\n')
+num_points = len(points)
+decimated_points = points[::max(1, num_points // 1000)]  # Take every nth point where n is the total points divided by 100
 
-def randrange(n, vmin, vmax):
-    """
-    Helper function to make an array of random numbers having shape (n, )
-    with each number distributed Uniform(vmin, vmax).
-    """
-    return (vmax - vmin)*np.random.rand(n) + vmin
+x, y, z = [], [], []
 
+for point in decimated_points:
+    coords = point.split()
+    x.append(float(coords[0]))
+    y.append(float(coords[1]))
+    z.append(float(coords[2]))
+
+# Create a 3D scatter plot
 fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z)
 
-n = 100
-
-# For each set of style and range settings, plot n random points in the box
-# defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
-for m, zlow, zhigh in [('o', -50, -25), ('^', -30, -5)]:
-    xs = randrange(n, 23, 32)
-    ys = randrange(n, 0, 100)
-    zs = randrange(n, zlow, zhigh)
-    ax.scatter(xs, ys, zs, marker=m)
-
+# Set labels
 ax.set_xlabel('X Label')
 ax.set_ylabel('Y Label')
 ax.set_zlabel('Z Label')
 
+# Set equal scale
+max_range = max(max(x) - min(x), max(y) - min(y), max(z) - min(z)) / 2.0
+mid_x = (max(x) + min(x)) * 0.5
+mid_y = (max(y) + min(y)) * 0.5
+mid_z = (max(z) + min(z)) * 0.5
+
+ax.set_xlim(mid_x - max_range, mid_x + max_range)
+ax.set_ylim(mid_y - max_range, mid_y + max_range)
+ax.set_zlim(mid_z - max_range, mid_z + max_range)
+
+# Show the plot
 plt.show()
