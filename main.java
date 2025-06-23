@@ -43,7 +43,6 @@ public class main {
                     for (int i = 0; i < line.length() - 11; i++) {
 
                         if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
-                            // writer.write(line + "\n");
 
                             int j = i + 4;
                             while (!line.substring(j, j + 1).equals(" ")) {
@@ -57,8 +56,6 @@ public class main {
                         if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1 && line.indexOf("E") != -1) {
 
                             moveFlag = true; // plotting points only on lines where movement occurs
-
-                            // writer.write(line + "\n");
 
                             int j = i + 4;
                             while (!line.substring(j, j + 1).equals(" ")) {
