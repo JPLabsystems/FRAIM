@@ -42,15 +42,29 @@ public class main {
 
                     for (int i = 0; i < line.length() - 11; i++) {
 
-                        if(line.substring(i, i +4).equals("G1 Z") && i == 0)
+                        if(line.substring(i, i + 4).equals("G1 Z") && i == 0)
                         {
+
+                            /*
+                             * EXTRACT VALUE OF TYPE Double
+                             */
+
+                            int j = i+4;
+                            while(!line.substring(j, j+1).equals(" "))
+                            {
+                                j++;
+                            }
+                            zCoord = new Double(line.substring(i+4, j));
+                            System.out.println(String.format("zCoord = %.3f", zCoord));
+
+
                             writer.write(line + "\n");
 
                             z = line.substring(i + 4, i+6);
                             System.out.println(z);
 
-                            Double Z = new Double(z);
-                            System.out.println("Double value" + Z);
+                            // Double Z = new Double(z);
+                            // System.out.println("Double value" + Z);
                         }
 
                         if (line.substring(i, i + 4).equals("G1 X") && i == 0) {
