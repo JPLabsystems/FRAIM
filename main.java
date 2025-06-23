@@ -43,41 +43,35 @@ public class main {
                     for (int i = 0; i < line.length() - 11; i++) {
 
                         if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
-                            writer.write(line + "\n");
+                            // writer.write(line + "\n");
 
                             int j = i + 4;
                             while (!line.substring(j, j + 1).equals(" ")) {
                                 j++;
                             }
                             zCoord = new Double(line.substring(i + 4, j));
-                            // System.out.println(String.format("zCoord = %.3f", zCoord));
 
                             point[2] = zCoord;
                         }
 
-                        if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1) {
+                        if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1 && line.indexOf("E") != -1) {
 
-                            moveFlag = true;
+                            moveFlag = true; // plotting points only on lines where movement occurs
 
-                            writer.write(line + "\n");
+                            // writer.write(line + "\n");
 
                             int j = i + 4;
                             while (!line.substring(j, j + 1).equals(" ")) {
                                 j++;
                             }
                             xCoord = new Double(line.substring(i + 4, j));
-
                             point[0] = xCoord;
 
                             int k = j + 1;
                             while (!line.substring(k, k + 1).equals(" ") && (k <= line.length() - 2)) {
                                 k++;
-                                // System.out.println("" + k + " " + line.substring(k, k + 1));
                             }
-                            // System.out.println(line.substring(j + 2, k));
-
                             yCoord = new Double(line.substring(j+2, k));
-
                             point[1] = yCoord;
 
                         }
@@ -86,6 +80,7 @@ public class main {
                     if (moveFlag) {
                         CLOUD.append(point);
                         System.out.printf("point: %.3f, %.3f, %.3f%n", point[0], point[1], point[2]);
+                        writer.write("" + point[0] + ", " + point[1] + ", " + point[2] + "\n");
                         moveFlag = false;
                     }
 
