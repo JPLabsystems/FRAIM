@@ -92,16 +92,11 @@ public class main {
                     }
                     if (moveFlag) {
                         CLOUD.append(point);
-                        // System.out.printf("point: %.3f, %.3f, %.3f%n", point[0], point[1], point[2]);
                         writer.write(String.format("%.3f %.3f %.3f%n", point[0], point[1], point[2]));
-                        // CLOUD.appendX(point[0]);
-                        // CLOUD.appendY(point[1]);
-                        // CLOUD.appendZ(point[2]);
                         moveFlag = false;
                     }
 
                 }
-                // CLOUD.printCloud();
                 System.out.println("\nRead/Write parsing complete");
 
             } catch (IOException e) {
@@ -114,5 +109,5 @@ public class main {
 
         // Writing to a file
     }
-    
+
 }
