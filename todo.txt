@@ -1,4 +1,5 @@
-visualization using matplotlib?
-decimation
-training/get tensorflow running
-parsing into ply/other standard formats
+V visualization using matplotlib?
+X decimation
+X training/get tensorflow running
+X parsing into ply/other standard formats
+X More abstraction

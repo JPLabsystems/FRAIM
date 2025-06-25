@@ -1,4 +1,5 @@
 from mpl_toolkits.mplot3d import Axes3D
+import random
 
 import matplotlib.pyplot as plt
 
@@ -8,7 +9,8 @@ file.close()
 
 points = cloud.strip().split('\n')
 num_points = len(points)
-decimated_points = points[::max(1, num_points // 1000)]  # Take every nth point where n is the total points divided by 100
+decimated_points = random.sample(points, min(2048, num_points))  # Randomly select up to 2048 points
+
 
 x, y, z = [], [], []
 
