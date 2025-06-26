@@ -36,7 +36,6 @@ public class Pointcloud {
             String line;
             while ((line = reader.readLine()) != null) {
 
-
                 for (int i = 0; i < line.length() - 8; i++) {
 
                     if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
@@ -51,7 +50,7 @@ public class Pointcloud {
                     }
 
                     if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1
-                            && line.indexOf("E") != -1) {
+                            && line.indexOf("E") != -1 && line.indexOf("prime the nozzle") == -1) {
 
                         moveFlag = true; // plotting points only on lines where movement occurs
 
@@ -72,7 +71,6 @@ public class Pointcloud {
 
                 }
                 if (moveFlag) {
-                    System.out.println(point[0] + ", " + point[1] + ", " + point[2]);
                     Double[] p = new Double[3];
                     p[0] = point[0];
                     p[1] = point[1];
@@ -118,8 +116,6 @@ public class Pointcloud {
                 double y = p[1];
                 double z = p[2];
                 writer.write("" + x + " " + y + " " + z + "\n");
-                // System.out.println(p[0] + ", " + p[1] + ", " + p[2]);
-
             }
             System.out.println("Done printing");
         } catch (IOException e) {
@@ -132,15 +128,18 @@ public class Pointcloud {
      */
     public void decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
-        int factor = pointcloud.size() / 2048;
-        for(int i = 0; i < pointcloud.size(); i+=factor + 1)
-        {
+        int pointcloudSize = pointcloud.size();
+        int factor = (pointcloudSize + 2047) / 2048;
+        int dif = 2048 - (pointcloudSize / factor);
+        for (int i = 0; i < dif; i++) {
+            decimatedCloud.add(pointcloud.get(i));
+        }
+        for (int i = dif; i < pointcloudSize; i += factor) {
             decimatedCloud.add(pointcloud.get(i));
         }
         System.out.println("cloud size: " + pointcloud.size());
         System.out.println("decimated cloud size:" + decimatedCloud.size());
         pointcloud = decimatedCloud;
-
 
         // find the
 

@@ -1,6 +1,5 @@
 from mpl_toolkits.mplot3d import Axes3D
-import random
-import random
+import time
 
 import matplotlib.pyplot as plt
 
@@ -9,7 +8,6 @@ cloud = file.read()
 file.close()
 
 points = cloud.strip().split('\n')
-
 
 x, y, z = [], [], []
 
