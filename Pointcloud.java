@@ -1,6 +1,7 @@
 import java.util.*;
 import java.io.*;
 
+
 public class Pointcloud {
 
     private ArrayList<Double[]> pointcloud; // this should probably be Double[2048][3]
@@ -83,7 +84,7 @@ public class Pointcloud {
                 }
             }
             decimate();
-            scale();
+            scaleTransform();
 
             System.out.println("\nparsing complete");
 
@@ -149,14 +150,15 @@ public class Pointcloud {
     }
 
     /**
-     * Scales model to fit inscribed into unit spehere.
+     * Scales and transforms model to fit inscribed into unit spehere.
      */
-    public void scale() {
+    public void scaleTransform() {
         ArrayList<Double[]> scaled = new ArrayList<>();
 
         double[] maxes = new double[3];
         double[] mins = new double[3];
 
+        /* GEOMETRIC ANALYSIS */
         for (int i = 0; i < 3; i++) {
             Double[] p = pointcloud.get(0);
             Double max = p[i];
@@ -185,12 +187,24 @@ public class Pointcloud {
 
         System.out.printf("%nlength: %.2f, width: %.2f, heigth: %.2f%n", length, width, height);
 
-    }
 
-    /**
-     * Transforms model to be centered within the unit sphere.
-     */
-    public void transform() {
+
+
+        /* SCALING */
+        double hypotenuse = Math.sqrt(length * length + width * width + height * height);
+        System.out.printf("\nHypotenuse = %.2f\n", hypotenuse);
+
+        for(int i = 0; i < pointcloud.size(); i++)
+        {
+            Double[] p = pointcloud.get(i);
+            Double[] sp = new Double[3];
+            sp[0] = p[0] / hypotenuse;
+            sp[1] = p[1] / hypotenuse;
+            sp[2] = p[2] / hypotenuse;
+            scaled.add(sp);
+        }
+        pointcloud = scaled;
+
 
     }
 
