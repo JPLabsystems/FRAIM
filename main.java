@@ -25,7 +25,7 @@ public class main {
         System.out.println("gcode source path = " + path);
         System.out.println("output directory path = " + out + "\n");
 
-        Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model1.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
+        Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
         CLOUD.parse();
         CLOUD.printCloudToFile();
     }   

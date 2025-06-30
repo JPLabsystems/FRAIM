@@ -1,3 +1,6 @@
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
 import matplotlib.pyplot as plt
 
 file = open("/home/justinas/FRAIM/Clouds/pointcloud1.txt", "r")
@@ -69,10 +72,21 @@ ax.plot(rect2_x, rect2_y, rect2_z, color='red', linestyle='-', linewidth=1, labe
 ax.legend()
 
 # Add a title to the plot for overall clarity
-ax.set_title('3D Point Cloud with Perpendicular Rectangles')
+ax.set_title('pointcloud')
 
 # Plot a single red point at (1, 1, 1)
-ax.scatter(125.29, 104.58, 7, color='red', s=100, label='Point (1, 1, 1)')
+ax.scatter(0, 0, 0, color='red', s=50)
+
+# Create a unit sphere
+u = np.linspace(0, 2 * np.pi, 100)
+v = np.linspace(0, np.pi, 100)
+x_sphere = np.outer(np.cos(u), np.sin(v))
+y_sphere = np.outer(np.sin(u), np.sin(v))
+z_sphere = np.outer(np.ones(np.size(u)), np.cos(v))
+
+# Plot the sphere
+
+# ax.plot_surface(x_sphere, y_sphere, z_sphere, color='blue', alpha=0.2)
 
 # # Animation function
 # def update(frame):

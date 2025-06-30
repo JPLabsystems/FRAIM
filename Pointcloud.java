@@ -181,36 +181,10 @@ public class Pointcloud {
         width = maxes[0] - mins[0];
         height = maxes[2] - mins[2];
 
-        // embed these into the file when printed
-        System.out.printf("X min: %.2f, X max: %.2f%n", mins[0], maxes[0]);
-        System.out.printf("Y min: %.2f, Y max: %.2f%n", mins[1], maxes[1]);
-        System.out.printf("Z min: %.2f, Z max: %.2f%n", mins[2], maxes[2]);
-
-        System.out.printf("%nlength: %.2f, width: %.2f, heigth: %.2f%n", length, width, height);
-
         /* TRANSFORMATION */
-        ArrayList<Double[]> transformed = new ArrayList<>();
 
         double hypotenuse = Math.sqrt(length * length + width * width + height * height);
-        System.out.printf("\nHypotenuse = %.2f\n", hypotenuse);
-        
         Double[] centroid = {(mins[0] + (maxes[0] - mins[0]) / 2), (mins[1] + (maxes[1] - mins[1]) / 2), (mins[2] + (maxes[2] - mins[2]) / 2)};
-        System.out.printf("\nCENTROID: x = %.2f, y = %.2f, z = %.2f", centroid[0], centroid[1], centroid[2]);
-
-        for(int i = 0; i<pointcloud.size(); i++)
-        {
-            Double[] p = pointcloud.get(i);
-            Double[] sp = new Double[3];
-            for(int j = 0; j < 3; j++)
-            {
-                sp[j] = p[j] - centroid[j];
-            }
-            transformed.add(sp);
-        }
-        pointcloud = transformed;
-
-
-        /* SCALING */
         ArrayList<Double[]> scaled = new ArrayList<>();
 
         for(int i = 0; i < pointcloud.size(); i++)
@@ -219,12 +193,15 @@ public class Pointcloud {
             Double[] sp = new Double[3];
             for(int j = 0; j < 3; j++)
             {
-                sp[j] = p[j] / hypotenuse;
+                sp[j] = (p[j] - centroid[j]) / (hypotenuse / 2);
             }
             scaled.add(sp);
         }
-        //pointcloud = scaled;
+        pointcloud = scaled;
 
+        System.out.printf("\nX min: %.2f, X max: %.2f%nY min: %.2f, Y max: %.2f%nZ min: %.2f, Z max: %.2f%n%nlength: %.2f, width: %.2f, height: %.2f%n%nHypotenuse = %.2f%n%nCENTROID: x = %.2f, y = %.2f, z = %.2f%n", 
+                  mins[0], maxes[0], mins[1], maxes[1], mins[2], maxes[2], 
+                  length, width, height, hypotenuse, centroid[0], centroid[1], centroid[2]);
 
     }
 
