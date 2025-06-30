@@ -1,6 +1,11 @@
+/*
+ * JPLabsystems
+ * Justinas Petkauskas
+ * FRAIM 0.0.0.a
+ */
+
 import java.util.*;
 import java.io.*;
-
 
 public class Pointcloud {
 
@@ -144,16 +149,12 @@ public class Pointcloud {
         System.out.println("cloud size: " + pointcloud.size());
         System.out.println("decimated cloud size:" + decimatedCloud.size());
         pointcloud = decimatedCloud;
-
-        // find the
-
     }
 
     /**
      * Scales and transforms model to fit inscribed into unit spehere.
      */
     public void scaleTransform() {
-        ArrayList<Double[]> scaled = new ArrayList<>();
 
         double[] maxes = new double[3];
         double[] mins = new double[3];
@@ -187,23 +188,42 @@ public class Pointcloud {
 
         System.out.printf("%nlength: %.2f, width: %.2f, heigth: %.2f%n", length, width, height);
 
+        /* TRANSFORMATION */
+        ArrayList<Double[]> transformed = new ArrayList<>();
 
+        double hypotenuse = Math.sqrt(length * length + width * width + height * height);
+        System.out.printf("\nHypotenuse = %.2f\n", hypotenuse);
+        
+        Double[] centroid = {(mins[0] + (maxes[0] - mins[0]) / 2), (mins[1] + (maxes[1] - mins[1]) / 2), (mins[2] + (maxes[2] - mins[2]) / 2)};
+        System.out.printf("\nCENTROID: x = %.2f, y = %.2f, z = %.2f", centroid[0], centroid[1], centroid[2]);
+
+        for(int i = 0; i<pointcloud.size(); i++)
+        {
+            Double[] p = pointcloud.get(i);
+            Double[] sp = new Double[3];
+            for(int j = 0; j < 3; j++)
+            {
+                sp[j] = p[j] - centroid[j];
+            }
+            transformed.add(sp);
+        }
+        pointcloud = transformed;
 
 
         /* SCALING */
-        double hypotenuse = Math.sqrt(length * length + width * width + height * height);
-        System.out.printf("\nHypotenuse = %.2f\n", hypotenuse);
+        ArrayList<Double[]> scaled = new ArrayList<>();
 
         for(int i = 0; i < pointcloud.size(); i++)
         {
             Double[] p = pointcloud.get(i);
             Double[] sp = new Double[3];
-            sp[0] = p[0] / hypotenuse;
-            sp[1] = p[1] / hypotenuse;
-            sp[2] = p[2] / hypotenuse;
+            for(int j = 0; j < 3; j++)
+            {
+                sp[j] = p[j] / hypotenuse;
+            }
             scaled.add(sp);
         }
-        pointcloud = scaled;
+        //pointcloud = scaled;
 
 
     }

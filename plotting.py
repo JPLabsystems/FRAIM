@@ -71,6 +71,9 @@ ax.legend()
 # Add a title to the plot for overall clarity
 ax.set_title('3D Point Cloud with Perpendicular Rectangles')
 
+# Plot a single red point at (1, 1, 1)
+ax.scatter(125.29, 104.58, 7, color='red', s=100, label='Point (1, 1, 1)')
+
 # # Animation function
 # def update(frame):
 #     ax.view_init(elev=10, azim=frame)
