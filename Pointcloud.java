@@ -41,7 +41,7 @@ public class Pointcloud {
                     if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
 
                         int j = i + 4;
-                        while (!line.substring(j, j + 1).equals(" ")) {
+                        while (!line.substring(j, j + 1).equals(" ") && !line.substring(j, j + 1).equals("\n")) {
                             j++;
                         }
                         zCoord = new Double(line.substring(i + 4, j));
@@ -149,6 +149,48 @@ public class Pointcloud {
      * Scales model to fit inscribed into unit spehere.
      */
     public void scale() {
+        ArrayList<Double[]> scaled = new ArrayList<>();
+
+        double[] maxes = new double[3];
+        double[] mins = new double[3];
+
+        // char[] xyz = { 'x', 'y', 'z' };
+
+        for (int i = 0; i < 3; i++) {
+
+            Double[] p = pointcloud.get(0);
+            Double max = p[i];
+            Double min = p[i];
+
+            for (int j = 1; j < pointcloud.size(); j++) {
+                System.out.printf("i: %d, j: %d\n", i, j);
+                p = pointcloud.get(j);
+
+                if (p[i] > max) {
+                    max = p[i];
+                }
+
+                if (p[i] < min) {
+                    min = p[i];
+                }
+
+            }
+
+            mins[i] = min;
+            maxes[i] = max;
+
+        }
+
+        System.out.printf("X min: %.2f, X max: %.2f%n", mins[0], maxes[0]);
+        System.out.printf("Y min: %.2f, Y max: %.2f%n", mins[1], maxes[1]);
+        System.out.printf("Z min: %.2f, Z max: %.2f%n", mins[2], maxes[2]);
+
+    }
+
+    /**
+     * Transforms model to be centered within the unit sphere.
+     */
+    public void transform() {
 
     }
 

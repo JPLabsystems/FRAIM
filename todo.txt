@@ -1,5 +1,8 @@
+fix parse
+fix decimate
+
 V visualization using matplotlib?
-X decimation
+V decimation
 X training/get tensorflow running
 X parsing into ply/other standard formats
 X More abstraction
