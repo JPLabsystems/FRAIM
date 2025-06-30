@@ -3,7 +3,10 @@ import java.io.*;
 
 public class Pointcloud {
 
-    private ArrayList<Double[]> pointcloud;
+    private ArrayList<Double[]> pointcloud; // this should probably be Double[2048][3]
+
+    private double length, width, height;
+
     private String outputDir;
     private String sourceDir;
 
@@ -154,36 +157,33 @@ public class Pointcloud {
         double[] maxes = new double[3];
         double[] mins = new double[3];
 
-        // char[] xyz = { 'x', 'y', 'z' };
-
         for (int i = 0; i < 3; i++) {
-
             Double[] p = pointcloud.get(0);
             Double max = p[i];
             Double min = p[i];
-
             for (int j = 1; j < pointcloud.size(); j++) {
-                System.out.printf("i: %d, j: %d\n", i, j);
                 p = pointcloud.get(j);
-
                 if (p[i] > max) {
                     max = p[i];
                 }
-
                 if (p[i] < min) {
                     min = p[i];
                 }
-
             }
-
             mins[i] = min;
             maxes[i] = max;
-
         }
 
+        length = maxes[1] - mins[1];
+        width = maxes[0] - mins[0];
+        height = maxes[2] - mins[2];
+
+        // embed these into the file when printed
         System.out.printf("X min: %.2f, X max: %.2f%n", mins[0], maxes[0]);
         System.out.printf("Y min: %.2f, Y max: %.2f%n", mins[1], maxes[1]);
         System.out.printf("Z min: %.2f, Z max: %.2f%n", mins[2], maxes[2]);
+
+        System.out.printf("%nlength: %.2f, width: %.2f, heigth: %.2f%n", length, width, height);
 
     }
 
