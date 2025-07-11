@@ -13,3 +13,6 @@ refinement
 distillation
 training actual data
 mcu implementation
+
+NEW PLAN
+generic framework for detecting 
