@@ -6,6 +6,9 @@ public class main {
 
         Scanner in = new Scanner(System.in);
 
+        System.out.print("\n\t\t++++++++++++++++\n\t\t+ JPLabsystems +\n\t\t++++++++++++++++\n\n  *Firearm Risk and Interdiction Model* (FRAIM)\n\ncopyright(c) 2025 Justinas Petkauskas\ngcode parsing script\n");
+
+
         System.out.println(
                 "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/model.gcode)\n************************");
         String path = in.nextLine();
