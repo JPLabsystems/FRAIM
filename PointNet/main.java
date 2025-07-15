@@ -1,13 +1,13 @@
 package PointNet;
 import java.util.*;
+import java.io.*;
 
 public class main {
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.print("\n\t\t++++++++++++++++\n\t\t+ JPLabsystems +\n\t\t++++++++++++++++\n\n  *Firearm Risk and Interdiction Model* (FRAIM)\n\ncopyright(c) 2025 Justinas Petkauskas\ngcode parsing script\n");
-
+        System.out.print("\n\t\t++++++++++++++++\n\t\t| JPLabsystems |\n\t\t++++++++++++++++\n\n  *Firearm Risk and Interdiction Model* (FRAIM)\n\ncopyright(c) 2025 Justinas Petkauskas\ngcode parsing script\n");
 
         System.out.println(
                 "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/model.gcode)\n************************");
@@ -29,8 +29,24 @@ public class main {
         System.out.println("gcode source path = " + path);
         System.out.println("output directory path = " + out + "\n");
 
-        Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
-        CLOUD.parse();
-        CLOUD.printCloudToFile();
+        /*
+         * 
+         *  TESTING
+         * 
+         */
+
+        File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/negatives");
+        File[] gcodes = gcodeDir.listFiles();
+        System.out.println("PATH TO gcodes[0]: " + gcodes[0].getAbsolutePath());
+        for(File gcode : gcodes)
+        {
+            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), null);
+            test.parse();
+        }
+
+
+        // Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
+        // CLOUD.parse();
+        // CLOUD.printCloudToFile();
     }   
 }
