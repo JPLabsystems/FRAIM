@@ -29,7 +29,7 @@ public class Pointcloud {
     /**
      * parse the specified gcode into a pointcloud array
      */
-    public void parse() {
+    public boolean parse() {
         File gcode = new File(sourceDir);
         try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
 
@@ -94,8 +94,11 @@ public class Pointcloud {
 
             System.out.println("\nparsing complete");
 
+            return true;
+
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

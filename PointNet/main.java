@@ -38,15 +38,22 @@ public class main {
         File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/negatives");
         File[] gcodes = gcodeDir.listFiles();
         System.out.println("PATH TO gcodes[0]: " + gcodes[0].getAbsolutePath());
+        
+        int count = 0;
         for(File gcode : gcodes)
         {
             Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), null);
-            test.parse();
+            if(test.parse())
+            {
+                count++;
+                System.out.printf("\n\n**********\nobject %d parsed successcully\n**********\n\n", count);
+            }
         }
-
+        System.out.printf("%d objects of %d total sliced successfully", count, gcodes.length);
 
         // Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
         // CLOUD.parse();
         // CLOUD.printCloudToFile();
+        
     }   
 }
