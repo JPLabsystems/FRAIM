@@ -5,29 +5,29 @@ import java.io.*;
 public class main {
     public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
+        // Scanner in = new Scanner(System.in);
 
         System.out.print("\n\t\t++++++++++++++++\n\t\t| JPLabsystems |\n\t\t++++++++++++++++\n\n  *Firearm Risk and Interdiction Model* (FRAIM)\n\ncopyright(c) 2025 Justinas Petkauskas\ngcode parsing script\n");
 
-        System.out.println(
-                "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/model.gcode)\n************************");
-        String path = in.nextLine();
+        // System.out.println(
+        //         "\n***** FRAIM PARSER *****\nEnter path for gcode or leave empty for default (/home/justinas/FRAIM/model.gcode)\n************************");
+        // String path = in.nextLine();
 
-        System.out.println(
-                "\n************************\nEnter path for output directory or leave empty for default (/home/justinas/FRAIM/Clouds)\n************************");
-        String out = in.nextLine();
+        // System.out.println(
+        //         "\n************************\nEnter path for output directory or leave empty for default (/home/justinas/FRAIM/Clouds)\n************************");
+        // String out = in.nextLine();
 
-        in.close();
+        // in.close();
 
-        if (path.equals("")) {
-            path = "/home/justinas/FRAIM/model.gcode";
-        }
-        if (out.equals("")) {
-            out = "/home/justinas/FRAIM/Clouds";
-        }
+        // if (path.equals("")) {
+        //     path = "/home/justinas/FRAIM/model.gcode";
+        // }
+        // if (out.equals("")) {
+        //     out = "/home/justinas/FRAIM/Clouds";
+        // }
 
-        System.out.println("gcode source path = " + path);
-        System.out.println("output directory path = " + out + "\n");
+        // System.out.println("gcode source path = " + path);
+        // System.out.println("output directory path = " + out + "\n");
 
         /*
          * 
@@ -54,6 +54,6 @@ public class main {
         // Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt");
         // CLOUD.parse();
         // CLOUD.printCloudToFile();
-        
+
     }   
 }

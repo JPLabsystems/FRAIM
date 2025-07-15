@@ -142,8 +142,8 @@ public class Pointcloud {
     public void decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
         int pointcloudSize = pointcloud.size();
-        int factor = (pointcloudSize + 2047) / 2048;
-        int dif = 2048 - (pointcloudSize / factor);
+        int factor = (pointcloudSize + 511) / 512;
+        int dif = 512 - (pointcloudSize / factor);
         for (int i = 0; i < dif; i++) {
             decimatedCloud.add(pointcloud.get(i));
         }
