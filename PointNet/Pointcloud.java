@@ -6,6 +6,8 @@ package PointNet;
  */
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.*;
 
 public class Pointcloud {
@@ -17,13 +19,18 @@ public class Pointcloud {
     private String outputDir;
     private String sourceDir;
 
+    private int numPoints;
+
+    public static int numFile;
+
     /**
      * Constructor.
      */
-    public Pointcloud(String sD, String oD) {
+    public Pointcloud(String sD, String oD, int nP) {
         pointcloud = new ArrayList<>();
         outputDir = oD;
         sourceDir = sD;
+        numPoints = nP;
     }
 
     /**
@@ -102,6 +109,60 @@ public class Pointcloud {
         }
     }
 
+    public boolean parseRegex()
+    {
+        File gcode = new File(sourceDir);
+        try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
+
+            /* EACH LINE REPRESENTS ONE POINT */
+
+            boolean moveFlag = false;
+
+            Double xCoord = 0.0;
+            Double yCoord = 0.0;
+            Double zCoord = 0.0;
+
+            Pattern gcodeG1XY = Pattern.compile("^G1\\b[^;]*?\\bX([-\\d.]+)\\s+Y([-\\d.]+)");
+            Pattern gcodeG1Z = Pattern.compile("^G1\\b[^;]*?\\bZ([-\\d.]+)");
+
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                Matcher XY = gcodeG1XY.matcher(line);
+                Matcher Z = gcodeG1Z.matcher(line);
+
+                if(XY.find())
+                {
+                    xCoord = new Double(XY.group(1));
+                    yCoord = new Double(XY.group(2));
+                    moveFlag = true;
+                }
+                else if(Z.find())
+                {
+                    zCoord = new Double(Z.group(1));
+                }
+
+                if(moveFlag)
+                {
+                    moveFlag = false;
+                    Double[] point = {xCoord, yCoord, zCoord};
+                    append(point);
+                }
+            }
+            decimate();
+            //scaleTransform();
+
+            System.out.printf("\nparsing complete\n");
+
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     /**
      * Add point (Double[3]) to the ArrayList
      */
@@ -122,7 +183,9 @@ public class Pointcloud {
      */
     public void printCloudToFile() // output cloud to given path
     {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputDir))) {
+        File outputFile = new File(outputDir + "/model" + numFile + ".txt");
+        numFile++;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
             for (int i = 0; i < pointcloud.size(); i++) {
                 Double[] p = pointcloud.get(i);
                 double x = p[0];
@@ -137,13 +200,13 @@ public class Pointcloud {
     }
 
     /**
-     * Reduces the number of points to exactly 2048 for passing to scaler.
+     * Reduces the number of points to exactly <numPoints> for passing to scaler.
      */
     public void decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
         int pointcloudSize = pointcloud.size();
-        int factor = (pointcloudSize + 511) / 512;
-        int dif = 512 - (pointcloudSize / factor);
+        int factor = (pointcloudSize + (numPoints - 1)) / numPoints;
+        int dif = numPoints - (pointcloudSize / factor);
         for (int i = 0; i < dif; i++) {
             decimatedCloud.add(pointcloud.get(i));
         }
