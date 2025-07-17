@@ -42,11 +42,12 @@ public class main {
         int count = 0;
         for(File gcode : gcodes)
         {
-            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), null);
+            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), "/home/justinas/FRAIM/trainingData/clouds/negatives");
             if(test.parse())
             {
                 count++;
                 System.out.printf("\n\n**********\nobject %d parsed successcully\n**********\n\n", count);
+                test.printCloudToFile();
             }
         }
         System.out.printf("%d objects of %d total sliced successfully", count, gcodes.length);
