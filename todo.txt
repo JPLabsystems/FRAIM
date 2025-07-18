@@ -1,5 +1,5 @@
-fix parse
-fix decimate
+V fix parse
+~ fix decimate
 
 V visualization using matplotlib?
 V decimation
