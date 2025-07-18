@@ -211,10 +211,12 @@ public class Pointcloud {
      */
     public boolean decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
+        
         int pointcloudSize = pointcloud.size();
         if(pointcloudSize < numPoints)
         {
             return false;
+        
         }
         int factor = (pointcloudSize + (numPoints - 1)) / numPoints;
         int dif = numPoints - (pointcloudSize / factor);
@@ -225,9 +227,12 @@ public class Pointcloud {
         for (int i = dif; i < pointcloudSize; i += factor) {
             decimatedCloud.add(pointcloud.get(i));
         }
+
         System.out.println("cloud size: " + pointcloud.size());
         System.out.println("decimated cloud size:" + decimatedCloud.size());
+        
         pointcloud = decimatedCloud;
+
         return true;
     }
 
