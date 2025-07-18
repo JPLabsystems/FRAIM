@@ -44,14 +44,16 @@ public class main {
          * 
          */
 
-        File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/positives");
+        File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/negatives");
         File[] gcodes = gcodeDir.listFiles();
-        System.out.println("PATH TO gcodes[0]: " + gcodes[0].getAbsolutePath());
+
+
+        System.out.println("PATH TO gcodes[64]: " + gcodes[64].getAbsolutePath());
         
         int count = 0;
         for(File gcode : gcodes)
         {
-            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), "/home/justinas/FRAIM/trainingData/clouds/positives", numberPoints);
+            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), "/home/justinas/FRAIM/trainingData/clouds/negatives", numberPoints);
             if(test.parseRegex())
             {
                 count++;

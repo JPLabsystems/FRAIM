@@ -125,7 +125,6 @@ public class Pointcloud {
             Pattern gcodeG1XY = Pattern.compile("^G1\\b[^;]*?\\bX([-\\d.]+)\\s+Y([-\\d.]+)");
             Pattern gcodeG1Z = Pattern.compile("^G1\\b[^;]*?\\bZ([-\\d.]+)");
 
-
             String line;
             while ((line = reader.readLine()) != null) {
 
@@ -207,7 +206,8 @@ public class Pointcloud {
         int pointcloudSize = pointcloud.size();
         int factor = (pointcloudSize + (numPoints - 1)) / numPoints;
         int dif = numPoints - (pointcloudSize / factor);
-        for (int i = 0; i < dif; i++) {
+
+        for (int i = 1; i < dif; i++) {
             decimatedCloud.add(pointcloud.get(i));
         }
         for (int i = dif; i < pointcloudSize; i += factor) {
