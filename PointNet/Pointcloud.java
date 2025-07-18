@@ -109,12 +109,17 @@ public class Pointcloud {
         }
     }
 
+
+    /**
+     * Parse gcode into pointcloud array using Regex patterm
+     * @return returns True if GCode is valid and parses successfully. False if gcode is not valid/or if parse fails.
+     */
     public boolean parseRegex()
     {
         File gcode = new File(sourceDir);
         try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
 
-            /* EACH LINE REPRESENTS ONE POINT */
+            /* EACH <String line> REPRESENTS ONE POINT */
 
             boolean moveFlag = false;
 
@@ -149,8 +154,11 @@ public class Pointcloud {
                     append(point);
                 }
             }
-            decimate();
-            //scaleTransform();
+            if(!decimate())
+            {
+                return false;
+            }
+            scaleTransform();
 
             System.out.printf("\nparsing complete\n");
 
@@ -201,9 +209,13 @@ public class Pointcloud {
     /**
      * Reduces the number of points to exactly <numPoints> for passing to scaler.
      */
-    public void decimate() {
+    public boolean decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
         int pointcloudSize = pointcloud.size();
+        if(pointcloudSize < numPoints)
+        {
+            return false;
+        }
         int factor = (pointcloudSize + (numPoints - 1)) / numPoints;
         int dif = numPoints - (pointcloudSize / factor);
 
@@ -216,6 +228,7 @@ public class Pointcloud {
         System.out.println("cloud size: " + pointcloud.size());
         System.out.println("decimated cloud size:" + decimatedCloud.size());
         pointcloud = decimatedCloud;
+        return true;
     }
 
     /**
@@ -227,6 +240,7 @@ public class Pointcloud {
         double[] mins = new double[3];
 
         /* GEOMETRIC ANALYSIS */
+
         for (int i = 0; i < 3; i++) {
             Double[] p = pointcloud.get(0);
             Double max = p[i];

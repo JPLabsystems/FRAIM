@@ -3,7 +3,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-file = open("/home/justinas/FRAIM/Clouds/pointcloud1.txt", "r")
+file = open("/home/justinas/FRAIM/trainingData/clouds/negatives/model0.txt", "r")
 cloud = file.read()
 file.close()
 

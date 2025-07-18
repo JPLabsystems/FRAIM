@@ -48,7 +48,7 @@ public class main {
         File[] gcodes = gcodeDir.listFiles();
 
 
-        System.out.println("PATH TO gcodes[64]: " + gcodes[64].getAbsolutePath());
+        System.out.println("PATH TO gcodes[2]: " + gcodes[64].getAbsolutePath());
         
         int count = 0;
         for(File gcode : gcodes)
@@ -59,6 +59,11 @@ public class main {
                 count++;
                 System.out.printf("\n\n**********\nobject %d parsed successcully\n**********\n\n", count);
                 test.printCloudToFile();
+            }
+            else {
+                count++;
+                System.out.printf("\n\n**********\nobject %d parsed unsuccesscully\n**********\n\n", count);
+
             }
         }
         System.out.printf("%d objects of %d total sliced successfully", count, gcodes.length);
