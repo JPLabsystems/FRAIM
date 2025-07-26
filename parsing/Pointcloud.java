@@ -1,8 +1,10 @@
-package PointNet;
 /*
  * JPLabsystems
  * Justinas Petkauskas
  * FRAIM 0.0.0.a
+ * 
+ * Generative AI Statement:
+ * The use of Generative AI to generate code has been limited to line-by-line syntax queries. All logic and program architecture is original. 
  */
 
 import java.util.*;
@@ -34,81 +36,18 @@ public class Pointcloud {
     }
 
     /**
-     * parse the specified gcode into a pointcloud array
+     * Getter for the pointcloud ArrayList.
      */
-    public boolean parse() {
-        File gcode = new File(sourceDir);
-        try (BufferedReader reader = new BufferedReader(new FileReader(gcode))) {
-
-            /* EACH LINE REPRESENTS ONE POINT */
-
-            boolean moveFlag = false;
-
-            Double zCoord;
-            Double xCoord;
-            Double yCoord;
-
-            Double[] point = new Double[3];
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-
-                for (int i = 0; i < line.length() - 8; i++) {
-
-                    if (line.substring(i, i + 4).equals("G1 Z") && i == 0) {
-
-                        int j = i + 4;
-                        while (!line.substring(j, j + 1).equals(" ") && !line.substring(j, j + 1).equals("\n")) {
-                            j++;
-                        }
-                        zCoord = new Double(line.substring(i + 4, j));
-
-                        point[2] = zCoord;
-                    }
-
-                    if (line.substring(i, i + 4).equals("G1 X") && i == 0 && line.indexOf("Y") != -1
-                            && line.indexOf("E") != -1 && line.indexOf("prime the nozzle") == -1) {
-
-                        moveFlag = true; // plotting points only on lines where movement occurs
-
-                        int j = i + 4;
-                        while (!line.substring(j, j + 1).equals(" ")) {
-                            j++;
-                        }
-                        xCoord = new Double(line.substring(i + 4, j));
-                        point[0] = xCoord;
-
-                        int k = j + 1;
-                        while (!line.substring(k, k + 1).equals(" ") && (k <= line.length() - 2)) {
-                            k++;
-                        }
-                        yCoord = new Double(line.substring(j + 2, k));
-                        point[1] = yCoord;
-                    }
-
-                }
-                if (moveFlag) {
-                    Double[] p = new Double[3];
-                    p[0] = point[0];
-                    p[1] = point[1];
-                    p[2] = point[2];
-                    append(p);
-                    moveFlag = false;
-                }
-            }
-            decimate();
-            scaleTransform();
-
-            System.out.println("\nparsing complete");
-
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public ArrayList<Double[]> getList() {
+        return pointcloud;
     }
 
+    /**
+     * Add point (Double[3]) to the ArrayList
+     */
+    public void append(Double[] point) {
+        pointcloud.add(point);
+    }
 
     /**
      * Parse gcode into pointcloud array using Regex patterm
@@ -154,7 +93,8 @@ public class Pointcloud {
                     append(point);
                 }
             }
-            if(!decimate())
+            int DCS = decimate(); 
+            if(DCS != numPoints)
             {
                 return false;
             }
@@ -168,20 +108,6 @@ public class Pointcloud {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * Add point (Double[3]) to the ArrayList
-     */
-    public void append(Double[] point) {
-        pointcloud.add(point);
-    }
-
-    /**
-     * Getter for the pointcloud ArrayList.
-     */
-    public ArrayList<Double[]> getList() {
-        return pointcloud;
     }
 
     /**
@@ -209,13 +135,13 @@ public class Pointcloud {
     /**
      * Reduces the number of points to exactly <numPoints> for passing to scaler.
      */
-    public boolean decimate() {
+    public int decimate() {
         ArrayList<Double[]> decimatedCloud = new ArrayList<>();
         
         int pointcloudSize = pointcloud.size();
         if(pointcloudSize < numPoints)
         {
-            return false;
+            return 0;
         
         }
         int factor = (pointcloudSize + (numPoints - 1)) / numPoints;
@@ -233,7 +159,7 @@ public class Pointcloud {
         
         pointcloud = decimatedCloud;
 
-        return true;
+        return pointcloud.size();
     }
 
     /**

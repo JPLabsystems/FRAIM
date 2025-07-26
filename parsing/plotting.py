@@ -2,8 +2,19 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 import matplotlib.pyplot as plt
+import tkinter as tk
+from tkinter import filedialog
 
-file = open("/home/justinas/FRAIM/trainingData/clouds/negatives/model0.txt", "r")
+# Open a file dialog to select the file
+root = tk.Tk()
+root.withdraw()  # Hide the main window
+file_path = filedialog.askopenfilename(title="Select point cloud file", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+
+if not file_path:
+    print("No file selected. Exiting.")
+    exit()
+
+file = open(file_path, "r")
 cloud = file.read()
 file.close()
 

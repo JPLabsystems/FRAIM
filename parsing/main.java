@@ -1,4 +1,3 @@
-package PointNet;
 import java.util.*;
 import java.io.*;
 
@@ -44,19 +43,22 @@ public class main {
          * 
          */
 
-        File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/negatives");
+        
+        File gcodeDir = new File("/home/justinas/FRAIM/trainingData/gcodes/positives");
         File[] gcodes = gcodeDir.listFiles();
 
 
-        System.out.println("PATH TO gcodes[2]: " + gcodes[64].getAbsolutePath());
+        // System.out.println("PATH TO gcodes[2]: " + gcodes[64].getAbsolutePath());
         
         int count = 0;
+        int sCount = 0;
         for(File gcode : gcodes)
         {
-            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), "/home/justinas/FRAIM/trainingData/clouds/negatives", numberPoints);
+            Pointcloud test = new Pointcloud(gcode.getAbsolutePath(), "/home/justinas/FRAIM/trainingData/clouds/positives", numberPoints);
             if(test.parseRegex())
             {
                 count++;
+                sCount++;
                 System.out.printf("\n\n**********\nobject %d parsed successcully\n**********\n\n", count);
                 test.printCloudToFile();
             }
@@ -66,9 +68,11 @@ public class main {
 
             }
         }
-        System.out.printf("%d objects of %d total sliced successfully", count, gcodes.length);
+        System.out.printf("%d objects of %d total sliced successfully", sCount, count);
 
-        // Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model3.gcode", "/home/justinas/FRAIM/Clouds/pointcloud1.txt", numberPoints);
+        
+
+        // Pointcloud CLOUD = new Pointcloud("/home/justinas/FRAIM/Models/model1.gcode", "/home/justinas/FRAIM/", numberPoints);
         // CLOUD.parseRegex();
         // // CLOUD.parse();
         // CLOUD.printCloudToFile();

@@ -13,6 +13,8 @@ refinement
 distillation
 training actual data
 mcu implementation
+modify pointnet architecture to reflect nuances of 3d printing
+reach out to relevant experts
 
 NEW PLAN
 generic framework for detecting 
